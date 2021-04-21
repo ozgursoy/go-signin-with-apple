@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
@@ -130,5 +131,10 @@ func doRequest(ctx context.Context, client *http.Client, result interface{}, url
 
 	defer res.Body.Close()
 
-	return json.NewDecoder(res.Body).Decode(result)
+	if res.StatusCode == 200 {
+		return json.NewDecoder(res.Body).Decode(result)
+	}
+
+	body, _ := ioutil.ReadAll(res.Body)
+	return fmt.Errorf("[apple returned error] status code: %d body: %s", res.StatusCode, string(body))
 }
