@@ -1,4 +1,4 @@
-module go-signin-with-apple
+module github.com/ozgursoy/go-signin-with-apple
 
 go 1.15
 
